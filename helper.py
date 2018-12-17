@@ -3,7 +3,7 @@ from random import randint
 def is_valid_key_word(key_word):
     if len(key_word) < 3:
         return False
-    black_list = ['doesn', 'can']
+    black_list = ['doesn', 'can', 'isn', 'aren']
     if key_word in black_list:
         return False
     return True
