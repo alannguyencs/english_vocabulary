@@ -1,5 +1,4 @@
 from random import shuffle
-from random import randint
 import codecs
 from helper import *
 
@@ -23,18 +22,36 @@ while id_line < len(lines) and len(lines[id_line]) > 8:
             id_line += 1
             break
 
-        sentence = lines[id_line].lower().replace('\n', '').replace('\r', '')
+        sentence = lines[id_line].replace('\n', '').replace('\r', '')
+        raw_list, words = [], []
+        word_id = {}
+        run_id = 0
+        run_word = ''
+        while(run_id < len(sentence)):
+            if sentence[run_id].isalpha():
+                run_word += sentence[run_id]
+            else:
+                raw_list.append(run_word)
+                run_word = ''
+                raw_list.append(sentence[run_id])
+            run_id += 1
+        if run_word != '':
+            raw_list.append(run_word)
+        for raw_id in range(len(raw_list)):
+            if raw_list[raw_id].isalpha():
+                words.append(raw_list[raw_id])
+                word_id[raw_list[raw_id]] = raw_id
+
         for ch in stop_words:
             sentence = sentence.replace(ch, '')
 
-        words = sentence.split(' ')
-        if not is_valid_words(words):
+        key_word = get_valid_words(words)
+        if key_word == None:
             continue
-        blank_id = randint(0, len(words) - 1)
-        blank_word = words[blank_id]
-        words[blank_id] = '_____________'
-        new_sentence = ' '.join(words)
-        new_sentence = blank_word + '|' + new_sentence
+
+        key_id = word_id[key_word]
+        raw_list[key_id] = '_____________'
+        new_sentence = key_word + '|' + ''.join(raw_list)
         content.append(new_sentence)
 
 
