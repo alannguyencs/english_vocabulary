@@ -1,6 +1,9 @@
 import codecs
 import random
+import os
+from collections import Counter
 
+import constants
 from utils import string_utils
 from utils import os_utils
 
@@ -122,3 +125,38 @@ def generate_quizlet(collection_names, collection_titles, collection_contents, c
     print('\n\n' + chapter_title + '\n\n')
     for sentence in chosen_sentences:
         print(sentence)
+    save_content(chosen_sentences, collection_id, chapter_id)
+
+
+def save_content(content, collection_id, chapter_id, stored_dir=None):
+    if stored_dir is None:
+        stored_dir = constants.DEFAULT_STORED_LESSONS_DIR
+    if not os.path.exists(stored_dir):
+        os.makedirs(stored_dir)
+
+    stored_file = str(collection_id) + '_' + str(chapter_id) + constants.CONTENT_EXTENSION
+    stored_file = os.path.join(stored_dir, stored_file)
+
+    writer = os_utils.create_writer(stored_file)
+    for sentence in content:
+        writer.write(sentence + '\n')
+    writer.close()
+
+
+def statistic_learned_words(stored_dir=None, backup_dir=None):
+    if stored_dir is None:
+        stored_dir = constants.DEFAULT_STORED_LESSONS_DIR
+    if backup_dir is None:
+        backup_dir = constants.DEFAULT_BACKUP_DIR
+
+    content_files = os_utils.list_files(stored_dir, constants.CONTENT_EXTENSION, backup_dir)
+    learned_words = list()
+    for f in content_files:
+        for line in open(f, 'r'):
+            line = line.strip()
+            keyword, sentence = line.split('|')
+            learned_words.append(keyword)
+    word_counter = Counter(learned_words)
+    print('Learned Words:')
+    for word in sorted(word_counter.items(), key=lambda x: x[1], reverse=True):
+        print(word[0] + '\t' + str(word[1]))

@@ -1,8 +1,14 @@
 DATA_DIR = 'data'
+DEFAULT_STORED_LESSONS_DIR = 'lessons'
+DEFAULT_BACKUP_DIR = 'backup'
+
 APPROVED_FILE_EXTENSIONS = ['.txt']
-BLACKLIST = ['doesn', 'cant', 'isnt', 'arent']
+BLACKLIST = ['dont', 'doesnt', 'cant', 'isnt', 'arent']
+
 LENGTH_THRESHOLD = 3
 SIZE_THRESHOLD = 5
 MAX_ITERATIONS = 50
 NUM_REVIEWED_SENTENCES = 5
 NUM_LEARNED_SENTENCES = 10
+
+CONTENT_EXTENSION = '.txt'

@@ -7,6 +7,7 @@ def show_menu():
     print("list -- List all chapters")
     print("x y -- "
           "Generate a quizlet set of collection x, chapter number y ")
+    print("review -- Review learned words")
     print("quit -- exit the program")
 
 
@@ -32,18 +33,19 @@ def main():
         option = input("Enter your option: ")
         if option == 'list':
             processor.show_chapter(collection_names, collection_titles)
-
-        options = option.split()
-        if len(options) == 2:
-            collection_id = options[0]
-            chapter_id = options[1]
-            if collection_id.isdigit() and chapter_id.isdigit():
-                collection_id = int(collection_id)
-                chapter_id = int(chapter_id)
-                processor.generate_quizlet(collection_names, collection_titles, collection_contents, collection_id, chapter_id, num_prev_sentences, num_current_sentences)
-
-        if option == 'quit':
+        elif option == 'review':
+            processor.statistic_learned_words()
+        elif option == 'quit':
             break
+        else:
+            options = option.split()
+            if len(options) == 2:
+                collection_id = options[0]
+                chapter_id = options[1]
+                if collection_id.isdigit() and chapter_id.isdigit():
+                    collection_id = int(collection_id)
+                    chapter_id = int(chapter_id)
+                    processor.generate_quizlet(collection_names, collection_titles, collection_contents, collection_id, chapter_id, num_prev_sentences, num_current_sentences)
 
 
 if __name__ == '__main__':
