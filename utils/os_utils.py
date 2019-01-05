@@ -23,7 +23,7 @@ def list_files(dir_path, approved_extensions=None, ignore_dirs=None):
             if extension in approved_extensions:
                 file_path = os.path.join(root, f)
                 # TODO: Verify whether this file in ignore dirs or not. Try to think better way
-                dir_name = os.path.basename(os.path.dirname(f))
+                dir_name = os.path.basename(os.path.dirname(file_path))
                 if dir_name in ignore_dirs:
                     continue
                 approved_files.append(file_path)
