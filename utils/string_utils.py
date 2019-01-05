@@ -37,6 +37,10 @@ def split_ending_punctuation(word):
     return word[:pos], word[pos:]
 
 
+def get_percentage_common(small_set, big_set):
+    return sum([element in big_set for element in small_set])/float(len(small_set))
+
+
 def main():
     print(split_ending_punctuation(' 1b2sc,,..'))
 

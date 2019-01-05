@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 from shutil import copyfile
 
 from utils import constants
@@ -35,13 +36,19 @@ def get_file_name(path):
     return file_name
 
 
+def get_extension(path):
+    return os.path.splitext(path)[1]
+
+
 def create_writer(path, backup_dir=None):
     if os.path.exists(path):
         if backup_dir is None:
             backup_dir = os.path.join(os.path.dirname(path), constants.DEFAULT_BACKUP_DIR)
         if not os.path.exists(backup_dir):
             os.makedirs(backup_dir)
-        backup_file = os.path.join(backup_dir, os.path.basename(path))
+        time_str = datetime.now().strftime('%Y%m%d_%H%M%S')
+        backup_file = get_file_name(path) + '_' + time_str + get_extension(path)
+        backup_file = os.path.join(backup_dir, backup_file)
         copyfile(path, backup_file)
 
         os.remove(path)

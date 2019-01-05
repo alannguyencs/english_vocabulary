@@ -25,6 +25,7 @@ def main():
     max_iterations = constants.MAX_ITERATIONS
     num_prev_sentences = constants.NUM_REVIEWED_SENTENCES
     num_current_sentences = constants.NUM_LEARNED_SENTENCES
+    num_repeat_generate = constants.NUM_REPEAT_GENERATE
 
     collection_names, collection_titles, collection_contents = initialize_system(data_dir, approved_extensions, blacklist, length_threshold, size_threshold, max_iterations)
 
@@ -45,7 +46,7 @@ def main():
                 if collection_id.isdigit() and chapter_id.isdigit():
                     collection_id = int(collection_id)
                     chapter_id = int(chapter_id)
-                    processor.generate_quizlet(collection_names, collection_titles, collection_contents, collection_id, chapter_id, num_prev_sentences, num_current_sentences)
+                    processor.generate_quizlet(collection_names, collection_titles, collection_contents, collection_id, chapter_id, num_prev_sentences, num_current_sentences, num_repeat_generate)
 
 
 if __name__ == '__main__':

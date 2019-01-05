@@ -88,7 +88,7 @@ def show_contents(collection_names, collection_titles, collection_contents):
                 print('\t\t' + sentence)
 
 
-def generate_quizlet(collection_names, collection_titles, collection_contents, collection_id, chapter_id, num_prev_sentences, num_current_sentences):
+def generate_quizlet(collection_names, collection_titles, collection_contents, collection_id, chapter_id, num_prev_sentences, num_current_sentences, num_repeat_generate):
     if collection_id < 0 or chapter_id < 0:
         print('Error!!! ID of a collection or chapter must be a positive integer!')
         return
@@ -108,18 +108,30 @@ def generate_quizlet(collection_names, collection_titles, collection_contents, c
     chapter_title = chapter_titles[chapter_id]
     chapter_content = chapter_contents[chapter_id]
 
-    sentences = list()
+    prev_sentences = list()
     for prev_chapter_id in range(chapter_id):
         for sentence in chapter_contents[prev_chapter_id]:
-            sentences.append(sentence)
-    if len(sentences) > num_prev_sentences:
-        sentences = random.sample(sentences, num_prev_sentences)
-    chosen_sentences = sentences
+            prev_sentences.append(sentence)
 
-    sentences = chapter_content
-    if len(sentences) > num_current_sentences:
-        sentences = random.sample(sentences, num_current_sentences)
-    chosen_sentences.extend(sentences)
+    chosen_sentences = list()
+    for _ in range(num_repeat_generate):
+        if len(prev_sentences) > num_prev_sentences:
+            for _ in range(constants.MAX_ITERATIONS):
+                sentences = random.sample(prev_sentences, num_prev_sentences)
+                if string_utils.get_percentage_common(sentences, chosen_sentences) < constants.COMMON_THRESHOLD:
+                    break
+            chosen_sentences.extend(sentences)
+        else:
+            chosen_sentences.extend(prev_sentences)
+
+        if len(chapter_content) > num_current_sentences:
+            for _ in range(constants.MAX_ITERATIONS):
+                sentences = random.sample(chapter_content, num_current_sentences)
+                if string_utils.get_percentage_common(sentences, chosen_sentences) < constants.COMMON_THRESHOLD:
+                    break
+            chosen_sentences.extend(sentences)
+        else:
+            chosen_sentences.extend(chapter_content)
 
     # generate questions
     print('\n\n' + chapter_title + '\n\n')
