@@ -89,6 +89,7 @@ def show_contents(collection_names, collection_titles, collection_contents):
 
 
 def generate_quizlet(collection_names, collection_titles, collection_contents, collection_id, chapter_id, num_prev_sentences, num_current_sentences, num_repeat_generate):
+    # Verify cllection id
     if collection_id < 0 or chapter_id < 0:
         print('Error!!! ID of a collection or chapter must be a positive integer!')
         return
@@ -97,10 +98,12 @@ def generate_quizlet(collection_names, collection_titles, collection_contents, c
         print('Error!!! We only have ' + str(len(collection_titles)) + ' collections')
         return
 
+    # Get collections, chapters, contents
     collection_name = collection_names[collection_id]
     chapter_titles = collection_titles[collection_id]
     chapter_contents = collection_contents[collection_id]
 
+    # Verify chapter id
     if chapter_id >= len(chapter_titles):
         print('Error!!! The collection ' + collection_name + ' only have ' + str(len(chapter_titles)) + ' chapters')
         return
