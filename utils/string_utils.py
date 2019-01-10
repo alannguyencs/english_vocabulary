@@ -37,6 +37,15 @@ def split_ending_punctuation(word):
     return word[:pos], word[pos:]
 
 
+def make_quizlet_formatted_sentence(words, keyword_id):
+    raw_word = words[keyword_id]
+    keyword, punctuation = split_ending_punctuation(raw_word)
+    words[keyword_id] = '_____________'
+    if len(punctuation) > 0:
+        words[keyword_id] += ' ' + punctuation
+    return keyword + '|' + ' '.join(words)
+
+
 def get_percentage_common(small_set, big_set):
     return sum([element in big_set for element in small_set])/float(len(small_set))
 
